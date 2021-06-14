@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">ContactViewDemo</string>
+    <string name="add_empoyee_button">Add Empoyee Button</string>
+    <string name="firstname_row">FirstName</string>
+    <string name="LastName_Placeholder">LastName</string>
+    <string name="person_image">Person image</string>
+    <string name="Email_placeholder">Email</string>
+    <string name="add_new_contact_label">Add New Contact</string>
+    <string name="ContactNumber_placeholder">Enter Contact Number</string>
+    <string name="Address_placeholder">EnterAddress</string>
+    <string name="add_contact_button_text">Add Contact</string>
+    <string name="update_label">Update the employee</string>
+    <string name="update_contact_btn_text">Update contact</string>
+    <string name="name_row">FirstName</string>
+    <string name="lastname_row">lastName</string>
+    <string name="address_row">Address</string>
+    <string name="email_row">Email</string>
+    <string name="phoneNumber_row">Contact Number</string>
+
+
+</resources>
