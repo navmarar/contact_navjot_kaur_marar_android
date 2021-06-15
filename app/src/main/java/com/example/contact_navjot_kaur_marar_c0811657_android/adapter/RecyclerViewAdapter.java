@@ -18,11 +18,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private List<Contact> contactlist;
     private Context context;
     private OnContactClickListener onContactClickListener;
+    private OnContactLongClickListener onContactLongClickListener;
 
-    public RecyclerViewAdapter(List<Contact> contactlist, Context context, OnContactClickListener onContactClickListener) {
+    public RecyclerViewAdapter(List<Contact> contactlist, Context context, OnContactClickListener onContactClickListener,OnContactLongClickListener onContactLongClickListener) {
         this.contactlist = contactlist;
         this.context = context;
         this.onContactClickListener = onContactClickListener;
+        this.onContactLongClickListener = onContactLongClickListener;
     }
 
     @NonNull
@@ -48,7 +50,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public int getItemCount() {
         return contactlist.size();
     }
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener , View.OnLongClickListener{
         private TextView firstName;
         private TextView lastName;
         private TextView address;
@@ -65,16 +67,25 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             phoneNumber = itemView.findViewById(R.id.phoneNumber);
 
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
 
         }
         @Override
         public void onClick(View v) {
             onContactClickListener.onContactClick(getAdapterPosition());
         }
+
+        @Override
+        public boolean onLongClick(View v) {
+            onContactLongClickListener.onContactLongClick(getAdapterPosition());
+            return false;
+        }
     }
 
  public interface OnContactClickListener{
      void onContactClick(int position);
  }
-
+    public interface OnContactLongClickListener{
+        void onContactLongClick(int position);
+    }
 }

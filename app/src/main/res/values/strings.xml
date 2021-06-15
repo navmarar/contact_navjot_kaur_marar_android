@@ -16,6 +16,7 @@
     <string name="address_row">Address</string>
     <string name="email_row">Email</string>
     <string name="phoneNumber_row">Contact Number</string>
+    <string name="search">search</string>
 
 
 </resources>

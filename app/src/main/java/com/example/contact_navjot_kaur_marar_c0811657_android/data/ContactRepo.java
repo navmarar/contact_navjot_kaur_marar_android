@@ -28,7 +28,10 @@ public class ContactRepo {
     public void insert(Contact contact) {
         ContactRoomDatabase.databaseWriteExecutor.execute(() -> contactDao.insert(contact));
     }
-
+  /*  public void searchDatabase(Contact contact) {
+        String searchQuery = null;
+        ContactRoomDatabase.databaseWriteExecutor.execute(() -> contactDao.searchDatabase(searchQuery));
+    }*/
     public void update(Contact contact) {
         ContactRoomDatabase.databaseWriteExecutor.execute(() -> contactDao.update(contact));
     }

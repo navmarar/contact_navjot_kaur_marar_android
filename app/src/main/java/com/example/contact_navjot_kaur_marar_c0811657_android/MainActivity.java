@@ -5,6 +5,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,11 +16,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -36,10 +41,11 @@ import java.util.Locale;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 
-public class MainActivity extends AppCompatActivity  implements RecyclerViewAdapter.OnContactClickListener{
+public class MainActivity extends AppCompatActivity  implements RecyclerViewAdapter.OnContactClickListener, RecyclerViewAdapter.OnContactLongClickListener {
 
 
     public static final String CONTACT_ID = "contact_id";
+    private static final int REQUEST_PHONE_CALL = 1;
 
     // declaration of employeeViewModel
     private ContactView contactView;
@@ -63,7 +69,7 @@ public class MainActivity extends AppCompatActivity  implements RecyclerViewAdap
 
         contactView.getAllContacts().observe(this, contacts -> {
             // set adapter
-            recyclerViewAdapter = new RecyclerViewAdapter(contacts, this, this);
+            recyclerViewAdapter = new RecyclerViewAdapter(contacts, this, this, this);
             recyclerView.setAdapter(recyclerViewAdapter);
         });
 
@@ -140,11 +146,29 @@ public class MainActivity extends AppCompatActivity  implements RecyclerViewAdap
                     String Address = data.getStringExtra(AddContact.ADDRESS);
 
 
-
-                    Contact contact = new Contact(FirstName,LastName, Email,PhoneNumber,Address);
+                    Contact contact = new Contact(FirstName, LastName, Email, PhoneNumber, Address);
                     contactView.insert(contact);
                 }
             });
+
+
+    @Override
+    public void onContactLongClick(int position) {
+
+       Intent intent = new Intent(Intent.ACTION_CALL);
+       Contact contact = contactView.getAllContacts().getValue().get(position);
+       String makecall = contact.getPhoneNumber();
+       intent.setData(Uri.parse("tel:" + makecall));
+       if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+           ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                   Manifest.permission.CALL_PHONE},REQUEST_PHONE_CALL);
+           }
+else {
+           startActivity(intent);
+        }
+    }
+
+
 
     @Override
     public void onContactClick(int position) {
@@ -154,6 +178,7 @@ public class MainActivity extends AppCompatActivity  implements RecyclerViewAdap
         intent.putExtra(CONTACT_ID, contact.getId());
         startActivity(intent);
     }
+
+
+
 }
-
-

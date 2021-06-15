@@ -1,5 +1,8 @@
 package com.example.contact_navjot_kaur_marar_c0811657_android.data;
 
+import android.app.Person;
+
+import androidx.constraintlayout.helper.widget.Flow;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -30,5 +33,14 @@ public interface ContactDao {
 
     @Delete
     void delete(Contact contact);
+/*
+
+    @Query("SELECT *FROM contact_table WHERE FirstName LIKE:searchQuery OR LastName LIKE:searchQuery ")
+    LiveData<List<Person>> searchQuery();
+
+    void searchDatabase(String searchQuery);
+*/
+
+    //fun searchDatabase(searchQuery:String String searchQuery): Flow<List<Person>>
 
 }
