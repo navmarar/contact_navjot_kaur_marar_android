@@ -186,6 +186,11 @@ public class MainActivity extends AppCompatActivity  implements RecyclerViewAdap
 
     @Override
     public void onContactLongClick(int position) {
+        Contact contact = contactView.getAllContacts().getValue().get(position);
+        String makecall = contact.getPhoneNumber();
+        String semail= contact.getEmail();
+
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("You have three options");
@@ -196,17 +201,10 @@ public class MainActivity extends AppCompatActivity  implements RecyclerViewAdap
 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(Intent.ACTION_CALL);
-                Contact contact = contactView.getAllContacts().getValue().get(position);
-                String makecall = contact.getPhoneNumber();
-                intent.setData(Uri.parse("tel:" + makecall));
-                if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{
-                            Manifest.permission.CALL_PHONE},REQUEST_PHONE_CALL);
-                }
-                else {
-                    startActivity(intent);
-                }
+                Intent call = new Intent(Intent.ACTION_CALL);
+                call.setData(Uri.parse("tel:" + makecall));
+                startActivity(call);
+
             }
         });
 
@@ -215,13 +213,27 @@ public class MainActivity extends AppCompatActivity  implements RecyclerViewAdap
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
+                Intent sms = new Intent(Intent.ACTION_VIEW);
+                sms.putExtra("address", makecall);
+                sms.putExtra("sms_body","Type your message here");
+                sms.setType("vnd.android-dir/mms-sms");
 
-            }
-        });
+                    startActivity(sms);
+
+
+            }});
+
         builder.setNeutralButton("EMAIL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
+                Intent email = new Intent(Intent.ACTION_SEND);
+                email.putExtra(Intent.EXTRA_EMAIL, new String[]{ semail});
+                email.putExtra(Intent.EXTRA_SUBJECT, "Welocome Message");
+                email.putExtra(Intent.EXTRA_TEXT, "Hello");
+                email.setType("message/rfc822");
+
+                startActivity(email);
             }
         });
         AlertDialog dialog = builder.create();
