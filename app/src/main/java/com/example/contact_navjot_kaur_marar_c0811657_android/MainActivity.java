@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
@@ -25,6 +27,7 @@ import android.graphics.Canvas;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.example.contact_navjot_kaur_marar_c0811657_android.adapter.RecyclerViewAdapter;
@@ -35,6 +38,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -145,7 +149,35 @@ public class MainActivity extends AppCompatActivity  implements RecyclerViewAdap
                     String PhoneNumber = data.getStringExtra(AddContact.PHONE_NUMBER);
                     String Address = data.getStringExtra(AddContact.ADDRESS);
 
+                    Intent intentInsertEdit = new Intent(Intent.ACTION_INSERT_OR_EDIT);
+                    intentInsertEdit.setType(ContactsContract.Contacts.CONTENT_ITEM_TYPE);
+                    int contactName = 0;
+                    intentInsertEdit.putExtra(ContactsContract.Intents.Insert.NAME, contactName);
+                    ArrayList<ContentValues>  data1= new ArrayList<ContentValues>();
 
+//Filling data with phone numbers
+                    ContentValues row = new ContentValues();
+                    row.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
+                    row.put(ContactsContract.CommonDataKinds.Phone.NUMBER, "");
+                    row.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE);
+                    data1.add(row);
+
+                    ContentValues row2 = new ContentValues();
+                    row2.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
+                    row2.put(ContactsContract.CommonDataKinds.Phone.NUMBER, "");
+                    row2.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_WORK);
+                    data1.add(row2);
+
+                    ContentValues row3 = new ContentValues();
+                    row3.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
+                    row3.put(ContactsContract.CommonDataKinds.Phone.NUMBER, "");
+                    row3.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME);
+                    data1.add(row3);
+
+
+                    startActivity(intentInsertEdit);
+                    
+                    
                     Contact contact = new Contact(FirstName, LastName, Email, PhoneNumber, Address);
                     contactView.insert(contact);
                 }
@@ -155,7 +187,47 @@ public class MainActivity extends AppCompatActivity  implements RecyclerViewAdap
     @Override
     public void onContactLongClick(int position) {
 
-       Intent intent = new Intent(Intent.ACTION_CALL);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("You have three options");
+        builder.setTitle("How do you want to Contact");
+    builder.setIcon(R.drawable.ic_person);//This line should be added
+
+        builder.setPositiveButton(" make call", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                Contact contact = contactView.getAllContacts().getValue().get(position);
+                String makecall = contact.getPhoneNumber();
+                intent.setData(Uri.parse("tel:" + makecall));
+                if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                            Manifest.permission.CALL_PHONE},REQUEST_PHONE_CALL);
+                }
+                else {
+                    startActivity(intent);
+                }
+            }
+        });
+
+
+        builder.setNegativeButton("SEND_MESSAGE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+
+            }
+        });
+        builder.setNeutralButton("EMAIL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    /*   Intent intent = new Intent(Intent.ACTION_CALL);
        Contact contact = contactView.getAllContacts().getValue().get(position);
        String makecall = contact.getPhoneNumber();
        intent.setData(Uri.parse("tel:" + makecall));
@@ -165,7 +237,7 @@ public class MainActivity extends AppCompatActivity  implements RecyclerViewAdap
            }
 else {
            startActivity(intent);
-        }
+        }*/
     }
 
 

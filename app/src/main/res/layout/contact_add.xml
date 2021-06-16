@@ -32,8 +32,10 @@
             android:layout_marginTop="20dp"
             android:hint="@string/firstname_row"
             android:paddingHorizontal="5dp"
+            android:drawableEnd="@drawable/ic_person1"
             android:autofillHints="FIRST NAME"
-            android:inputType="text" />
+            android:inputType="text"
+            android:drawableRight="@drawable/ic_person1" />
 
 
         <EditText
@@ -41,8 +43,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/LastName_Placeholder"
+            android:drawableEnd="@drawable/ic_person1"
             android:inputType="text"
-            android:importantForAutofill="no" />
+            android:importantForAutofill="no"
+            android:drawableRight="@drawable/ic_person1" />
 
 
         <EditText
@@ -50,16 +54,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/Email_placeholder"
+            android:drawableEnd="@drawable/ic_email"
             android:inputType="text"
-            android:importantForAutofill="no" />
+            android:importantForAutofill="no"
+            android:drawableRight="@drawable/ic_email" />
 
         <EditText
             android:id="@+id/et_PhoneNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/ContactNumber_placeholder"
+            android:drawableEnd="@drawable/ic_contact_phone"
             android:inputType="number"
-            android:importantForAutofill="no" />
+            android:importantForAutofill="no"
+            android:drawableRight="@drawable/ic_contact_phone" />
 
 
 
@@ -68,8 +76,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/Address_placeholder"
+            android:drawableEnd="@drawable/ic_location"
             android:inputType="text"
-            android:importantForAutofill="no" />
+            android:importantForAutofill="no"
+            android:drawableRight="@drawable/ic_location" />
 
 
         <Button
